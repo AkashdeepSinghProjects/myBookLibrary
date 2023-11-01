@@ -1,0 +1,30 @@
+body{
+    font-family: 'Playfair Display', serif;
+    
+}
+.logo{
+    height: 3rem;
+    width: 4rem;
+}
+.sortBox{
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    padding: 5px;
+}
+input[type='radio'] {
+    accent-color: #232323;
+}
+.bookPoster{
+    overflow: hidden;
+}
+.bookImage{
+    float: left;
+    border-radius: 0.5rem;
+}
+.author{
+    color: darkgray;
+}
+.content{
+    max-width: 40rem;
+    text-align: justify;
+}

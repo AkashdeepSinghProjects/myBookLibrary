@@ -1,0 +1,64 @@
+<%- include("partials/header.ejs") %>
+<!-- Section Title and sort -->
+<section class=" p-3">
+    <div class="d-flex justify-content-center">
+        <h1 class="fs-1 fw-bold">My Books Library</h1>
+    </div>
+    <form class="d-flex justify-content-center justify-content-lg-end">
+        <div class="sortBox d-flex">
+        <div class="p-1">
+            <input type="radio" id="title" name="drone" value="title" checked />
+            <label for="huey">Title</label>
+        </div>
+        
+        <div class="p-1">
+            <input type="radio" id="review" name="drone" value="review" />
+            <label for="dewey">Review</label>
+        </div>
+        
+        <div class="p-1">
+            <input type="radio" id="date" name="drone" value="date" />
+            <label for="louie">Date</label>
+        </div>
+        <button type="submit" class="btn btn-dark mx-3">Sort</button>
+        </div>
+    </form>
+    
+</section>
+<!-- books poster -->
+<section>
+    <% books.forEach(book => { %>
+    <!-- <div class="p-2 bookPoster">
+        <img class="bookImage mx-3" src="https://covers.openlibrary.org/b/isbn/9781612680019-L.jpg" alt="book_image" height="300rem"/>
+        <div class="content">
+            <h2 class="fs-2">Rich Dad, Poor Dad</h2> 
+            <h3 class="fs-6 author">By : Robert T. Kiyosaki</h3>
+            <div class="d-flex justify-content-between">
+                <h3>⭐️⭐️⭐️⭐️⭐️</h3> 
+                <h3 class="fs-6 my-2 ">Read on: 25 July,2020</h3>
+            </div>
+            <hr/>
+            <p>April of 2022 marks a 25-year milestone for the personal finance classic Rich Dad Poor Dad that still ranks as the #1 Personal Finance book of all time. And although 25 years have passed since Rich Dad Poor Dad was first published, readers will find that very little in the book itself has changed — and for good reason.</p>
+        </div>
+    </div>
+    <hr/> -->
+    <div class="p-2 bookPoster">
+        <!-- <img class="bookImage mx-3" src="/images/0013441001-L.jpg" alt="book_image" height="300rem"/> -->
+        <img class="bookImage mx-3" src="https://covers.openlibrary.org/b/isbn/<%= book.book_cover_isbn %>-L.jpg" alt="book_image" height="300rem"/>
+        <div class="content">
+            <h2 class="fs-2"><%= book.title %></h2> 
+            <h3 class="fs-6 author">By : <%= book.author %></h3>
+            <div class="d-flex justify-content-between">
+                <h3>⭐️⭐️⭐️⭐️⭐️<%= book.review %></h3> 
+                <h3 class="fs-6 my-2 ">Read on: <% const date = new Date(book.date_read); const options = { year: 'numeric', month: 'long', day: 'numeric' }; const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date); %><%=formattedDate  %></h3>
+            </div>
+            <hr/>
+            <p><%= book.note %></p>
+        </div>
+    </div>
+    <hr/>
+    <% }); %>
+</section>
+
+
+<%- include("partials/footer.ejs") %>
