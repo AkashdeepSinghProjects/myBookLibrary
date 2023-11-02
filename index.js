@@ -18,17 +18,48 @@ const db = new pg.Client({
 });
 db.connect();
 
+let sortBy = 'title';
+let sort = 'ASC';
+
 app.get("/",async (req,res)=>{
     try{
-        const result = await db.query("SELECT b.id,b.title,b.author,b.book_cover_isbn,r.review,CAST(r.date_read AS DATE) ,b.note FROM books AS b JOIN bookreview AS r ON r.book_id=b.id;");
-        console.log(result.rows);
-        res.render("index.ejs",{books:result.rows});
-        const date = new Date("2020-07-24T14:00:00.000Z");
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-    console.log(formattedDate); // prints "March 24, 2021"
+        // const result = await db.query("SELECT b.id,b.title,b.author,b.book_cover_isbn,r.review,CAST(r.date_read AS DATE) ,b.note FROM books AS b JOIN bookreview AS r ON r.book_id=b.id ORDER BY title ASC;");
+        const result = await db.query(`SELECT b.id,b.title,b.author,b.book_cover_isbn,r.review,CAST(r.date_read AS DATE) ,b.note FROM books AS b JOIN bookreview AS r ON r.book_id=b.id ORDER BY ${sortBy} ${sort}`);
+        res.render("index.ejs",{books:result.rows,sortBy:sortBy,sort:sort});
     }catch(err){
         console.error("Error: ",err.message);
+    }
+    
+});
+app.post("/changeOrder",(req,res)=>{
+    sortBy = req.body.sortBy;
+    sort = req.body.sort;
+    res.redirect("/");
+});
+
+app.post("/editNote",async (req,res)=>{
+    if(req.body.review&&(req.body.review<=10 && req.body.review>=1 )){
+        try{
+            await db.query("UPDATE bookreview SET review=$1 WHERE book_id=$2",[parseInt(req.body.review),req.body.bookId]);
+        }catch(err){
+            console.error("Error: ",err.message);
+        }
+        
+    }else if(req.body.bookNote){
+        try{
+            await db.query("UPDATE books SET note=$1 WHERE id=$2",[req.body.bookNote,req.body.bookId]);
+        }catch(err){
+            console.error("Error: ",err.message);
+        }
+    }
+    res.redirect("/");
+});
+app.post("/delete",async(req,res)=>{
+    try{
+        const result = await db.query("DELETE FROM bookreview WHERE book_id=$1",[req.body.bookId]);
+        res.redirect("/");
+    }catch(err){
+        console.error("Error:",err.message);
     }
     
 });

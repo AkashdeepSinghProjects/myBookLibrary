@@ -28,3 +28,17 @@ input[type='radio'] {
     max-width: 40rem;
     text-align: justify;
 }
+.summary,.bookNote{
+    display: inline;
+}
+.cross{
+    padding: 0;
+    border: none;
+    background: none;
+}
+.sortInc{
+    content: url("/images/sort-increase.svg");
+}
+.sortDec{
+    content: url("/images/sort-decrease.svg");
+}
