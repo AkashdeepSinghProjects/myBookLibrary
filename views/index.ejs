@@ -1,10 +1,13 @@
 <%- include("partials/header.ejs") %>
 <!-- Section Title and sort -->
-<section class=" p-3">
+<section class=" p-2">
     <div class="d-flex justify-content-center">
-        <h1 class="fs-1 fw-bold">My Books Library</h1>
+        <h1 class="fs-1 fw-bold heading p-2">My Books Library</h1>
     </div>
-    <form class="d-flex justify-content-center justify-content-lg-end" action="/changeOrder" method="post">
+    <form class="d-flex justify-content-center justify-content-lg-between" action="/changeOrder" method="post">
+        <div>
+            <button class="btn btn-dark my-2" type="submit" name="new" value="new">Add new Book</button>
+        </div>
         <div class="sortBox d-flex">
             <img class="sortIcon  <% if(sort=="ASC"){ %>sortInc<% }else{ %> sortDec<% } %>" alt="sort_icon" height="30rem">
             <input hidden name="sort" value="<%= sort %>" id="incOrDec"/>
@@ -22,7 +25,7 @@
                 <input type="radio" id="date" name="sortBy" value="date_read" <% if(sortBy=="date_read"){ %>checked<% } %>/>
                 <label for="louie">Date</label>
             </div>
-            <button type="submit" class="btn btn-dark mx-3">Sort</button>
+            <button type="submit" class="btn btn-dark ms-3">Sort</button>
         </div>
     </form>
     
@@ -31,7 +34,7 @@
 <section>
     <% books.forEach(book => { %>
     <div id="<%= book.id %>" class="p-2 bookPoster">
-        <img class="bookImage mx-3" src="https://covers.openlibrary.org/b/isbn/<%= book.book_cover_isbn %>-L.jpg" alt="book_image" height="300rem"/>
+        <img class="bookImage me-3" src="https://covers.openlibrary.org/b/isbn/<%= book.book_cover_isbn %>-L.jpg" alt="book_image" height="300rem"/>
         <div class="content">
             <div class="d-flex justify-content-between">
                 <h2 class="fs-2"><%= book.title %></h2> 

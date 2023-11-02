@@ -23,7 +23,6 @@ let sort = 'ASC';
 
 app.get("/",async (req,res)=>{
     try{
-        // const result = await db.query("SELECT b.id,b.title,b.author,b.book_cover_isbn,r.review,CAST(r.date_read AS DATE) ,b.note FROM books AS b JOIN bookreview AS r ON r.book_id=b.id ORDER BY title ASC;");
         const result = await db.query(`SELECT b.id,b.title,b.author,b.book_cover_isbn,r.review,CAST(r.date_read AS DATE) ,b.note FROM books AS b JOIN bookreview AS r ON r.book_id=b.id ORDER BY ${sortBy} ${sort}`);
         res.render("index.ejs",{books:result.rows,sortBy:sortBy,sort:sort});
     }catch(err){
@@ -32,10 +31,30 @@ app.get("/",async (req,res)=>{
     
 });
 app.post("/changeOrder",(req,res)=>{
-    sortBy = req.body.sortBy;
-    sort = req.body.sort;
-    res.redirect("/");
+    if(req.body.new){
+        res.render("new.ejs");
+    }else{
+        sortBy = req.body.sortBy;
+        sort = req.body.sort;
+        res.redirect("/");
+    }
+    
 });
+
+app.post("/new_book",async(req,res)=>{
+    try{
+        const result = await db.query("INSERT INTO books(title,author,book_cover_isbn,note) VALUES ($1, $2, $3, $4) RETURNING id;",[req.body.bookTitle,req.body.author,req.body.isbn,req.body.note]);
+        try{
+            const result2 = await db.query("INSERT INTO bookreview(book_id,review,date_read) VALUES ($1, $2, $3) RETURNING *;",[result.rows[0].id,req.body.rating,req.body.dateRead]);
+        }catch(err2){
+            console.error("Error 2 : ",err2.message);
+        }
+        res.redirect("/");
+    }catch(err){
+        console.error("Error 1 : ",err.message);
+    }
+    
+})
 
 app.post("/editNote",async (req,res)=>{
     if(req.body.review&&(req.body.review<=10 && req.body.review>=1 )){
