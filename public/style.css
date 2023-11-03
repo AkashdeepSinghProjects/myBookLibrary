@@ -7,6 +7,10 @@ body{
     background-color: black;
     border-radius: 0.5rem;
 }
+.search::placeholder {
+    color: white;
+    opacity: 0.5; 
+  }
 .logo{
     height: 3rem;
     width: 4rem;

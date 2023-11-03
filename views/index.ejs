@@ -30,6 +30,19 @@
     </form>
     
 </section>
+<!--search result-->
+<% if(locals.search){ %>
+<section class="p-2">
+    <h4>Search results for Title name "<%=search%>" :</h4>
+</section>
+<% } %>
+
+<!--No book Found-->
+<% if(books.length<=0){ %>
+<section class="d-flex justify-content-center m-5">
+    <h2>No Book Found..!!</h2>
+</section>
+<% } %>
 <!-- books poster -->
 <section>
     <% books.forEach(book => { %>
@@ -40,7 +53,7 @@
                 <h2 class="fs-2"><%= book.title %></h2> 
                 <form action="/delete" method="post">
                     <input hidden name="bookId" value="<%= book.id %>">
-                    <button type="submit" class="fs-6 my-3 cross" title="delete book">╳</button>
+                    <button type="submit" class="fs-6 my-2 cross" title="delete book">╳</button>
                 </form>
             </div>
             
